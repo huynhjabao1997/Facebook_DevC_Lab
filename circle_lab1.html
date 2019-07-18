@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Currency Converter</title>
+</head>
+
+<body>
+    <div>
+        <h1>Currency Converter</h1>
+        <h3>Select input currency</h3>
+        <input type="radio" id="usd" name="currency" value="USD_VND" checked>
+        <label for="usd">USD</label>
+        <br />
+        <input type="radio" id="eur" name="currency" value="EUR_VND">
+        <label for="eur">EUR</label>
+    </div>
+    <input type="text" id="amount" />
+    <button onclick="convertToVnd()">Convert Currency</button>
+    <span id="result"></span>
+</body>
+<script>
+    function convertToVnd() {
+        let conversion = 0;
+        if (document.getElementById("usd").checked) {
+            conversion = callApi(document.getElementById("usd").value);
+        } else {
+            conversion = callApi(document.getElementById("eur").value);
+        }
+        let inputMoney = document.getElementById('amount').value;
+        let vndAmount = inputMoney * conversion;
+        document.getElementById('result').innerHTML = vndAmount;
+    }
+
+    function callApi(currency) {
+        var money;
+        var xhr = new XMLHttpRequest();
+        xhr.open('GET', 'https://free.currconv.com/api/v7/convert?q=' + currency + '&compact=ultra&apiKey=4f40ed2db62faea558d3');
+        xhr.onload = function () {
+            if (xhr.status === 200) {
+                updateResults(JSON.parse(xhr.responseText));
+                //return JSON.parse(xhr.responseText).USD_VND;
+                money = JSON.parse(xhr.responseText).USD_VND;
+            }
+            else {
+                alert('Request failed.  Returned status of ' + xhr.status);
+            }
+            return money;
+        };
+        xhr.send();
+    }
+
+    function updateResults(response) {
+        console.log(response);
+    }
+</script>
+
+</html>
