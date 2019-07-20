@@ -36,26 +36,22 @@
     }
 
     function callApi(currency) {
-        var money;
         var xhr = new XMLHttpRequest();
         xhr.open('GET', 'https://free.currconv.com/api/v7/convert?q=' + currency + '&compact=ultra&apiKey=4f40ed2db62faea558d3');
         xhr.onload = function () {
             if (xhr.status === 200) {
                 updateResults(JSON.parse(xhr.responseText));
-                //return JSON.parse(xhr.responseText).USD_VND;
-                money = JSON.parse(xhr.responseText).USD_VND;
             }
             else {
                 alert('Request failed.  Returned status of ' + xhr.status);
             }
-            return money;
         };
         xhr.send();
     }
 
     function updateResults(response) {
         console.log(response);
+        document.getElementById("result").innerHTML = response.USD_VND;
     }
 </script>
-
 </html>
